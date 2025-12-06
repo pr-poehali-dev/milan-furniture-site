@@ -4,11 +4,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
-import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import Header from '@/components/Header';
+import CatalogSection from '@/components/CatalogSection';
+import DeliveryCalculator from '@/components/DeliveryCalculator';
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -152,60 +152,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm z-50 border-b">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold tracking-tight">Милана+</h1>
-            
-            <div className="hidden md:flex gap-8">
-              {['home', 'about', 'catalog', 'portfolio', 'testimonials', 'faq', 'delivery', 'contacts'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {section === 'home' && 'Главная'}
-                  {section === 'about' && 'О компании'}
-                  {section === 'catalog' && 'Каталог'}
-                  {section === 'portfolio' && 'Портфолио'}
-                  {section === 'testimonials' && 'Отзывы'}
-                  {section === 'faq' && 'FAQ'}
-                  {section === 'delivery' && 'Доставка'}
-                  {section === 'contacts' && 'Контакты'}
-                </button>
-              ))}
-            </div>
-
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon">
-                  <Icon name="Menu" size={24} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[250px]">
-                <div className="flex flex-col gap-6 mt-8">
-                  {['home', 'about', 'catalog', 'portfolio', 'testimonials', 'faq', 'delivery', 'contacts'].map((section) => (
-                    <button
-                      key={section}
-                      onClick={() => scrollToSection(section)}
-                      className="text-left text-lg text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {section === 'home' && 'Главная'}
-                      {section === 'about' && 'О компании'}
-                      {section === 'catalog' && 'Каталог'}
-                      {section === 'portfolio' && 'Портфолио'}
-                      {section === 'testimonials' && 'Отзывы'}
-                      {section === 'faq' && 'FAQ'}
-                      {section === 'delivery' && 'Доставка'}
-                      {section === 'contacts' && 'Контакты'}
-                    </button>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-      </nav>
+      <Header 
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        scrollToSection={scrollToSection}
+      />
 
       <section id="home" className="pt-32 pb-20 px-6">
         <div className="container mx-auto max-w-6xl">
@@ -260,64 +211,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="catalog" className="py-20 px-6">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-light mb-12 text-center">Каталог</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {furnitureItems.map((item, index) => (
-              <Dialog key={index}>
-                <DialogTrigger asChild>
-                  <Card className="hover-lift overflow-hidden cursor-pointer">
-                    <div className="h-64 overflow-hidden">
-                      <img 
-                        src={item.image} 
-                        alt={item.name}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="text-sm text-muted-foreground mb-2">{item.category}</div>
-                      <h3 className="text-xl font-medium mb-2">{item.name}</h3>
-                      <div className="text-2xl font-light text-primary">{item.price}</div>
-                    </CardContent>
-                  </Card>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl">{item.name}</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-6">
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-full h-80 object-cover rounded-sm"
-                    />
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-sm text-muted-foreground">{item.brand}</span>
-                        <span className="text-3xl font-light text-primary">{item.price}</span>
-                      </div>
-                      <p className="text-muted-foreground mb-6">{item.description}</p>
-                      <h4 className="font-medium mb-3">Особенности:</h4>
-                      <ul className="space-y-2">
-                        {item.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2">
-                            <Icon name="Check" size={20} className="text-primary" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button className="w-full mt-6" size="lg">
-                        Заказать консультацию
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CatalogSection furnitureItems={furnitureItems} />
 
       <section id="portfolio" className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
@@ -396,122 +290,11 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="delivery" className="py-20 px-6">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-4xl font-light mb-12 text-center">Доставка и сборка</h2>
-          <Card className="p-8">
-            <h3 className="text-2xl font-medium mb-6">Калькулятор стоимости</h3>
-            <div className="space-y-6">
-              <div>
-                <Label htmlFor="address">Адрес доставки</Label>
-                <Input
-                  id="address"
-                  placeholder="Сочи, Урожайная ул., 73Г"
-                  value={deliveryData.address}
-                  onChange={(e) => setDeliveryData({ ...deliveryData, address: e.target.value })}
-                  className="mt-2"
-                />
-              </div>
-              
-              <div className="grid md:grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="width">Ширина (см)</Label>
-                  <Input
-                    id="width"
-                    type="number"
-                    placeholder="200"
-                    value={deliveryData.width}
-                    onChange={(e) => setDeliveryData({ ...deliveryData, width: e.target.value })}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="height">Высота (см)</Label>
-                  <Input
-                    id="height"
-                    type="number"
-                    placeholder="90"
-                    value={deliveryData.height}
-                    onChange={(e) => setDeliveryData({ ...deliveryData, height: e.target.value })}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="depth">Глубина (см)</Label>
-                  <Input
-                    id="depth"
-                    type="number"
-                    placeholder="85"
-                    value={deliveryData.depth}
-                    onChange={(e) => setDeliveryData({ ...deliveryData, depth: e.target.value })}
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="assembly"
-                  checked={deliveryData.assembly}
-                  onChange={(e) => setDeliveryData({ ...deliveryData, assembly: e.target.checked })}
-                  className="w-4 h-4"
-                />
-                <Label htmlFor="assembly" className="cursor-pointer">
-                  Требуется сборка (+2500 ₽)
-                </Label>
-              </div>
-
-              {deliveryData.width && deliveryData.height && deliveryData.depth && (
-                <div className="mt-6 p-6 bg-muted rounded-sm">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-muted-foreground mb-1">Итоговая стоимость:</div>
-                      <div className="text-3xl font-light">{calculateDelivery()} ₽</div>
-                    </div>
-                    <Icon name="Truck" size={48} className="text-primary" />
-                  </div>
-                  <Separator className="my-4" />
-                  <div className="text-sm text-muted-foreground">
-                    <div className="flex justify-between mb-2">
-                      <span>Базовая доставка:</span>
-                      <span>1 500 ₽</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span>За объём:</span>
-                      <span>{Math.round((Number(deliveryData.width) * Number(deliveryData.height) * Number(deliveryData.depth)) / 1000000 * 300)} ₽</span>
-                    </div>
-                    {deliveryData.assembly && (
-                      <div className="flex justify-between">
-                        <span>Сборка:</span>
-                        <span>2 500 ₽</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </Card>
-
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <Icon name="MapPin" size={40} className="mx-auto mb-3 text-primary" />
-              <h4 className="font-medium mb-2">Доставка по Сочи</h4>
-              <p className="text-sm text-muted-foreground">В черте города — от 1 дня</p>
-            </div>
-            <div className="text-center">
-              <Icon name="Clock" size={40} className="mx-auto mb-3 text-primary" />
-              <h4 className="font-medium mb-2">Удобное время</h4>
-              <p className="text-sm text-muted-foreground">Выберите подходящий интервал</p>
-            </div>
-            <div className="text-center">
-              <Icon name="Wrench" size={40} className="mx-auto mb-3 text-primary" />
-              <h4 className="font-medium mb-2">Профессиональная сборка</h4>
-              <p className="text-sm text-muted-foreground">Опытные мастера</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <DeliveryCalculator 
+        deliveryData={deliveryData}
+        setDeliveryData={setDeliveryData}
+        calculateDelivery={calculateDelivery}
+      />
 
       <section id="contacts" className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
